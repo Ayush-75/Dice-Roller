@@ -1,36 +1,54 @@
 package com.example.basicdiceroller
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import kotlin.random.Random as Random
+import android.os.Handler
+import android.os.Looper
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import com.example.basicdiceroller.databinding.ActivityMainBinding
+import kotlin.random.Random
+
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var diceImage:ImageView
+
+    private lateinit var binding: ActivityMainBinding
+    private var randomInt: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        val rollButton:Button = findViewById(R.id.roll)
-
-        diceImage = findViewById(R.id.randomDiceImage)
-
-//        rollButton.text = "Lets Roll"
-        rollButton.setOnClickListener{
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.roll.setOnClickListener {
             rollDice()
+            binding.roll.text = getString(R.string.change_with_click)
+//            Toast.makeText(this, randomInt.toString(), Toast.LENGTH_SHORT).show()
+
+
+            toastTime()
         }
+
+
     }
 
+
+    // in future replace it with coroutine
+    private fun toastTime(){
+        val toast =
+            Toast.makeText(this, randomInt.toString(), Toast.LENGTH_SHORT)
+        toast.show()
+
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({ toast.cancel() }, 500)
+
+    }
+
+
     private fun rollDice() {
-        val randomInt =  Random.nextInt(6)+1
 
 
-        val drawableResources = when(randomInt) {
+        randomInt = Random.nextInt(6) + 1
+        val drawableResources = when (randomInt) {
             1 -> R.drawable.dice_1
             2 -> R.drawable.dice_2
             3 -> R.drawable.dice_3
@@ -38,7 +56,9 @@ class MainActivity : AppCompatActivity() {
             5 -> R.drawable.dice_5
             else -> R.drawable.dice_6
         }
-            diceImage.setImageResource(drawableResources)
+
+        binding.randomDiceImage.setImageResource(drawableResources)
+
 
     }
 }
