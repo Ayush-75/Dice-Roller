@@ -3,9 +3,14 @@ package com.example.basicdiceroller
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.basicdiceroller.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 
@@ -32,14 +37,16 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    // in future replace it with coroutine
-    private fun toastTime(){
+    private fun toastTime() {
         val toast =
             Toast.makeText(this, randomInt.toString(), Toast.LENGTH_SHORT)
         toast.show()
 
-        val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({ toast.cancel() }, 500)
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(500)
+            toast.cancel()
+            Log.d("Coroutine Thread", "toastTime: thread name  ${Thread.currentThread().name} ")
+        }
 
     }
 
