@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(500)
             toast.cancel()
-            Log.d("Coroutine Thread", "toastTime: thread name  ${Thread.currentThread().name} ")
+//            Log.d("Coroutine Thread", "toastTime: thread name  ${Thread.currentThread().name} ")
         }
 
     }
